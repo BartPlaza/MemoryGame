@@ -1,0 +1,39 @@
+<html lang="pl">
+<head>
+	<meta charset="utf8">
+	<title>ToDo App</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+	<div id="container">
+		<header>
+			<h1>Memory Game</h1>
+			<p>Created by Bartlomiej Plaza</p>
+		</header>
+		<div id="rounds-counter" class="text-right">Rounds: <span>0</span></div>
+		<div id="game-wrapper">
+			<div id="start-game">
+				<div class="form-group text-center">
+				  <label for="level">Wybierz poziom:</label>
+				  <select class="form-control" id="level">
+				    <option value="0">Beginner</option>
+				    <option value="1">Intermediate</option>
+				    <option value="2">Advance</option>
+				  </select>
+				</div>
+				<div class="form-group text-center">
+					<button id="start-button" class="btn btn-primary">Start Game</button>
+				</div>
+			</div>
+			<div id="cards-wrapper">
+
+			</div>
+		</div>
+		<footer>
+			&copy Created by Bartlomiej Plaza
+		</footer>
+	</div>
+	<script src="main.js"></script>
+</body>
+</html>
