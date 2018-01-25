@@ -35,7 +35,6 @@ function generateCards(cards){
 	for(let i=1; i<=cards; i++){
 		let card = document.createElement('div');
 		card.className = 'card';
-		card.innerHTML = actualValue;
 		card.setAttribute('value', actualValue);
 		if(i % 2 == 0){
 			actualValue++;
@@ -72,13 +71,26 @@ function addClickListeners(){
 			if(move == 0){
 				value = this.getAttribute('value');
 				element = this;
+				this.classList.add('selected');
+				this.innerHTML = value;
 				move++;
 			} else if(move == 1){
+				this.classList.add('selected');
+				this.innerHTML = this.getAttribute('value');
 				if(value == this.getAttribute('value')){
-					this.style.visibility='hidden';
+					let el = this;
+					setTimeout(function(){
+					el.style.visibility='hidden';
 					element.style.visibility="hidden";
+					},1000);
 				} else {
-					alert('pudło');
+					let el= this;
+					setTimeout(function(){
+						el.classList.remove('selected');
+						el.innerHTML='';
+						element.classList.remove('selected');
+						element.innerHTML = '';
+						},1000);
 				}
 				move--;
 				updateRound();
