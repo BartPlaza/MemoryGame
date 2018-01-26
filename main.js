@@ -6,7 +6,9 @@ const levels = {
 }
 
 const startButton = document.getElementById('start-button');
+const restartButton = document.getElementById('restart-button');
 const startPanel = document.getElementById('start-game');
+const restartPanel = document.getElementById('end-game');
 const gameWrapper = document.getElementById('game-wrapper');
 const cardsWrapper = document.getElementById('cards-wrapper');
 const roundsCounter = document.getElementById('rounds-counter')
@@ -18,6 +20,12 @@ var round = 0;
 startButton.addEventListener('click', function(){
 	let level = document.getElementById('level').value;
 	startGame(level);
+});
+
+restartButton.addEventListener('click', function(){
+	restartPanel.style.display = "none";
+	restartGame();
+	startPanel.style.display = "block";
 });
 
 function startGame(level) {
@@ -47,7 +55,6 @@ function generateCards(cards){
 
 function shuffleCards(cardsArray){
 	let cardsNumber = cardsArray.length;
-	console.log(cardsArray[2]);
 
 	for (let i = cardsNumber - 1; i > 0; i --) {
 		let j = Math.floor(Math.random() * (i+1));
@@ -64,17 +71,26 @@ function displayCards(cardsArray){
 	}
 }
 
+function deleteCards(){
+	let childs = cardsWrapper.children;
+	while(childs.length > 0){
+		cardsWrapper.removeChild(cardsWrapper.firstChild);
+	}
+}
+
 function addClickListeners(){
 	let cards = document.getElementsByClassName('card');
 	for(let i=0; i< cards.length; i++) {
-		cards[i].addEventListener('click', function(){
+		cards[i].addEventListener('click', function(event){
 			if(move == 0){
 				value = this.getAttribute('value');
 				element = this;
 				this.classList.add('selected');
 				this.innerHTML = value;
+				this.classList.add('disabled');
 				move++;
 			} else if(move == 1){
+				canClick(false);
 				this.classList.add('selected');
 				this.innerHTML = this.getAttribute('value');
 				if(value == this.getAttribute('value')){
@@ -82,6 +98,8 @@ function addClickListeners(){
 					setTimeout(function(){
 					el.style.visibility='hidden';
 					element.style.visibility="hidden";
+					canClick(true);
+					checkIfWin();
 					},1000);
 				} else {
 					let el= this;
@@ -90,11 +108,12 @@ function addClickListeners(){
 						el.innerHTML='';
 						element.classList.remove('selected');
 						element.innerHTML = '';
+						canClick(true);
 						},1000);
 				}
 				move--;
 				updateRound();
-			}
+			};
 		});
 	}
 }
@@ -103,3 +122,36 @@ function updateRound(){
 	round++
 	roundsCounter.querySelector('span').innerHTML = round;
 }
+
+function restartRound(){
+	round = 0;
+	roundsCounter.querySelector('span').innerHTML = round;
+}
+
+function canClick(value){
+	let elements = cardsWrapper.children;
+	for(let i=0; i<elements.length; i++){
+		if(value == false){
+			elements[i].classList.add('disabled');
+		} else if(value == true){
+			elements[i].classList.remove('disabled');
+		}
+	}
+}
+
+function checkIfWin(){
+	let elements = cardsWrapper.children;
+	for(let i=0; i<elements.length; i++){
+		if(!(elements[i].classList.contains('selected'))){
+			return false;
+		};
+	}
+	restartPanel.querySelector('span').innerHTML = round;
+	restartPanel.style.display = "block";
+}
+
+function restartGame(){
+	restartRound();
+	deleteCards();
+}
+
